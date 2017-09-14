@@ -2,7 +2,7 @@
 public class TokenList_Imp implements TokenList {
 	
 	private Token[] tokenList;  //ollafdsfebve
-	private int index;	//edit3
+	private int index;	//edit4
 	
 	public TokenList_Imp(int length) {
 		tokenList = new Token[length];	//string length
