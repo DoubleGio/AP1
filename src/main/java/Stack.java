@@ -8,13 +8,15 @@ public class Stack implements TokenStack {
 		tokenStack = new Token[10];
 		topOfStack = -1;
 	}
-	@Override
+
 	public void push(Token token) {
 		topOfStack++;
+		if (topOfStack == tokenStack.length) {
+			//verdubbel stack grootte
+		}
 		tokenStack[topOfStack] = token;
 	}
 
-	@Override
 	public Token pop() {
 		if (topOfStack <= -1) {
 			//something error
@@ -23,7 +25,6 @@ public class Stack implements TokenStack {
 		return tokenStack[topOfStack + 1];
 	}
 
-	@Override
 	public Token top() {
 		if (topOfStack <= -1) {
 			//something error
