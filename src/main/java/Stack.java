@@ -4,33 +4,24 @@ public class Stack implements TokenStack {
 	private Token[] tokenStack;
 	private int topOfStack;
 	
-	public Stack (TokenList tokens) {		//FIX DIT ofzo
+	public Stack () {
+		tokenStack = new Token[10];
+		topOfStack = -1;
+	}
+	
+	public Stack (TokenList tokens) {
 		tokenStack = new Token[tokens.size()];
 		topOfStack = -1;
-		while (topOfStack < tokens.size()) {
+		for (int i = 0; i < tokens.size(); i++) {
 			topOfStack++;
-        	Token token = tokens.get(topOfStack);
-        	int type = token.getType();
-        	if (type == 1) {
-        		tokenStack[topOfStack] = token;
-        	} else if (type == 2) {
-        		Token token2 = tokens.get(topOfStack + 1);
-        		if (token2.getType() == 3) {
-        			
-        		}
-        		tokenStack[topOfStack] = token2;
-        		topOfStack++;
-        		tokenStack[topOfStack] = token;
-        	} else {	//type = 3		3x(4-5)	--> 3 4 5 - x
-        		
-        	}
-        }
+			tokenStack[topOfStack] = tokens.get(i);
+		}
 	}
-
+	
 	public void push(Token token) {
 		topOfStack++;
 		if (topOfStack == tokenStack.length) {
-			//verdubbel stack grootte
+			//verdubbel de stack lengte
 		}
 		tokenStack[topOfStack] = token;
 	}
