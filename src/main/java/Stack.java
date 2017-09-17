@@ -36,9 +36,11 @@ public class Stack implements TokenStack {
 
 	public Token top() {
 		if (topOfStack <= -1) {
-			//something error
+			return null;
+			//nog steeds error check?
+		} else {
+			return tokenStack[topOfStack];
 		}
-		return tokenStack[topOfStack];
 	}
 
 	public int size() {
