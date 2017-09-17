@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
     
-    private static final String OPERATOR_TOKENS = "+-*/^";
+    private static final String OPERATOR_TOKENS = "+ - * / ^";
 
 	private boolean isNumber(String token) {
 		try(Scanner in = new Scanner(token)) {
@@ -14,16 +14,14 @@ public class Main implements CalculatorInterface {
 	}
 	
 	private boolean isOperator(String token) {
-		try(Scanner in = new Scanner(token)) {
-			try(Scanner operatorScanner = new Scanner(OPERATOR_TOKENS)) {
-				while (operatorScanner.hasNext()) {
-					if (in.equals(operatorScanner.next())) {
-						return true;
-					} 
-				}
-				return false;
+		try(Scanner operatorScanner = new Scanner(OPERATOR_TOKENS)) {
+			while (operatorScanner.hasNext()) {
+				if (token.equals(operatorScanner.next())) {
+					return true;
+				} 
 			}
 		}
+		return false;
 	}
 	
 	private int whichPresedence(String token) {
@@ -52,7 +50,7 @@ public class Main implements CalculatorInterface {
 	}
 	
     public TokenList readTokens(String input) {
-        TokenList result = new TokenList_Imp(input.replaceAll("\\s+","").length());
+    	TokenList result = new TokenList_Imp(input.replaceAll("\\s+","").length());
 		Scanner in = new Scanner(input);
 		while (in.hasNext()) {
 			String token = in.next();
@@ -95,14 +93,14 @@ public class Main implements CalculatorInterface {
     	TokenList tokens2 = new TokenList_Imp(tokens.size());
     	Stack operatorStack = new Stack();
     	int index = 0;
-        while (index < tokens.size()) {
+    	while (index < tokens.size()) {
         	Token token = tokens.get(index);
         	
         	if (token.getType() == 1) {
         		tokens2.add(token);
         	} else if (token.getType() == 2) {
-        		while (operatorStack.top().getPrecedence() >= token.getPrecedence()) {
-        			tokens2.add(operatorStack.pop());
+        		while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
+	        		tokens2.add(operatorStack.pop());
         		}
         		operatorStack.push(token);
         	}
@@ -115,11 +113,11 @@ public class Main implements CalculatorInterface {
         		}
         		operatorStack.pop();
         	}
-        	while (!operatorStack.top().equals(null)) {
-        		tokens2.add(operatorStack.pop());
-        	}
         	index++;
         }
+        while (operatorStack.top() != null) {
+    		tokens2.add(operatorStack.pop());
+    	}
         return tokens2;
     }
 
