@@ -85,14 +85,42 @@ public class Main implements CalculatorInterface {
 		return result;
     }
 
+    
     public Double rpn(TokenList tokens) {
-        // TODO: Implement this
+    	Stack stack = new Stack(tokens);
         return null;
     }
 
     public TokenList shuntingYard(TokenList tokens) {
-        // TODO: Implement this
-        return null;
+    	TokenList tokens2 = new TokenList_Imp(tokens.size());
+    	Stack operatorStack = new Stack();
+    	int index = 0;
+        while (index < tokens.size()) {
+        	Token token = tokens.get(index);
+        	
+        	if (token.getType() == 1) {
+        		tokens2.add(token);
+        	} else if (token.getType() == 2) {
+        		while (operatorStack.top().getPrecedence() >= token.getPrecedence()) {
+        			tokens2.add(operatorStack.pop());
+        		}
+        		operatorStack.push(token);
+        	}
+        	if (token.getValue().equals("(")) {
+        		operatorStack.push(token);
+        	}
+        	if (token.getValue().equals(")")) {
+        		while (!operatorStack.top().equals("(")) {
+        			tokens2.add(operatorStack.pop());
+        		}
+        		operatorStack.pop();
+        	}
+        	while (!operatorStack.top().equals(null)) {
+        		tokens2.add(operatorStack.pop());
+        	}
+        	index++;
+        }
+        return tokens2;
     }
 
     private void start() {
