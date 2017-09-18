@@ -6,6 +6,12 @@ import java.util.Scanner;
 public class Main implements CalculatorInterface {
     
     private static final String OPERATOR_TOKENS = "+ - * / ^";
+    private static final String OPERATOR_TOKENS = "+ - * / ^";
+    private static final String PLUS_TOKEN = "+";
+    private static final String MINUS_TOKEN = "-";
+    private static final String MULTIPLY_TOKEN = "*";
+    private static final String DIVIDE_TOKEN = "/";
+    private static final String POWER_TOKEN = "^";
 
 	private boolean isNumber(String token) {
 		try(Scanner in = new Scanner(token)) {
@@ -27,15 +33,15 @@ public class Main implements CalculatorInterface {
 	private int whichPresedence(String token) {
 		int presedence = 0;
 		switch (token) {
-			case "+": presedence = 0;
+			case PLUS_TOKEN: presedence = 0;
 				break;
-			case "-": presedence = 0;
+			case MINUS_TOKEN: presedence = 0;
 				break;
-			case "*": presedence = 1;
+			case MULTIPLY_TOKEN: presedence = 1;
 				break;
-			case "/": presedence = 1;
+			case DIVIDE_TOKEN: presedence = 1;
 				break;
-			case "^": presedence = 2;
+			case POWER_TOKEN: presedence = 2;
 				break;
 		}
 		return presedence;
@@ -85,8 +91,41 @@ public class Main implements CalculatorInterface {
 
     
     public Double rpn(TokenList tokens) {
-    	Stack stack = new Stack(tokens);
-        return null;
+    	DoubleStack_Imp stack = new DoubleStack_Imp();
+    	double result = 0.0;
+    	
+    	for (int i = 0; i < tokens.size(); i++){
+    		if (tokens.get(i).getType() == 1) {
+    			Scanner in = new Scanner(tokens.get(i).getValue());
+    			stack.push(in.nextDouble());
+    		} else if (tokens.get(i).getType() == 2){
+    			stack = performOperation(tokens.get(i), stack);
+    		}
+    	}
+    	if (stack.size() == 1) {
+    		result = stack.top();
+    	} else {
+    		//something error
+    	}
+        return result;
+    }
+	
+    private DoubleStack_Imp performOperation(Token_Imp operator, DoubleStack_Imp stack) {
+    	double a = stack.pop();
+    	double b = stack.pop();
+    	
+    	if (operator.getValue().equals(PLUS_TOKEN)) {
+    		stack.push(a + b);
+    	} else if (operator.getValue().equals(MINUS_TOKEN)) {
+    		stack.push(a - b);
+    	} else if (operator.getValue().equals(MULTIPLY_TOKEN)) {
+    		stack.push(a * b);
+    	} else if (operator.getValue().equals(DIVIDE_TOKEN)) {
+     		stack.push(a / b);
+     	} else if (operator.getValue().equals(POWER_TOKEN)) {
+    		stack.push((double)((int)a ^ (int)b)); // pici lelijk
+    	}
+    	return stack;
     }
 
     public TokenList shuntingYard(TokenList tokens) {
