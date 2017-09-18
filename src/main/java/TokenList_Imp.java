@@ -9,7 +9,7 @@ public class TokenList_Imp implements TokenList {
 		index = 0;
 	}
 
-	public void add(Token token) {
+	public void add(Token_Imp token) {
 		tokenList[index] = token;
 		index++;
 	}
@@ -20,7 +20,7 @@ public class TokenList_Imp implements TokenList {
     	System.arraycopy(tokenList, index+1, tempArray, index, tokenList.length - index);
     }
 
-	public void set(int index, Token token) {
+	public void set(int index, Token_Imp token) {
 		tokenList[index] = token;
 	}
 
