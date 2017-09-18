@@ -35,11 +35,10 @@ public class Stack implements TokenStack {
 	}
 
 	public Token top() {
-		if (topOfStack <= -1) {
-			return null;
-			//nog steeds error check?
-		} else {
+		try {
 			return tokenStack[topOfStack];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return null;
 		}
 	}
 
