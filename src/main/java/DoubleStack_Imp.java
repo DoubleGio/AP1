@@ -16,7 +16,7 @@ public class DoubleStack_Imp implements DoubleStack {
     		System.arraycopy(doubleStack, 0, tempStack, 0, doubleStack.length - 1);
     		doubleStack = tempStack;
     	}
-	tempStack[topOfStack] = element;
+	doubleStack[topOfStack] = element;
     }
 
     public Double pop() {
