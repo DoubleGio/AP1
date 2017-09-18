@@ -21,7 +21,9 @@ public class Stack implements TokenStack {
 	public void push(Token token) {
 		topOfStack++;
 		if (topOfStack == tokenStack.length) {
-			//verdubbel de stack lengte
+			Token[] tempStack = new Token[tokenStack.length * 2];
+    			System.arraycopy(tokenStack, 0, tempStack, 0, tokenStack.length - 1);
+    			tokenStack = tempStack;
 		}
 		tokenStack[topOfStack] = token;
 	}
