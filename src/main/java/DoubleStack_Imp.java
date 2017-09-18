@@ -28,14 +28,11 @@ public class DoubleStack_Imp implements DoubleStack {
     }
 
     public Double top() {
-    	if (topOfStack <= -1) {
-    		//something error
-    	}
-    	try {
-			return doubleStack[topOfStack];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return null;
-		}
+	try {
+		return doubleStack[topOfStack];
+	} catch (ArrayIndexOutOfBoundsException e) {
+		return null;
+	}
     }
 
     public int size() {
