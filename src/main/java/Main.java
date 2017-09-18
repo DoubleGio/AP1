@@ -65,7 +65,7 @@ public class Main implements CalculatorInterface {
 				precedence = whichPresedence(token) + extra_precedence;
 			} else if (isParenthesis(token)) {
 				type = 3;
-				precedence = 3;
+				precedence = -2;
 				if (token.equals("(")) {
 				    extra_precedence++;
 				} else if (token.equals(")")) {
@@ -94,27 +94,27 @@ public class Main implements CalculatorInterface {
     	Stack operatorStack = new Stack();
     	int index = 0;
     	while (index < tokens.size()) {
-        	Token token = tokens.get(index);
-        	
-        	if (token.getType() == 1) {
-        		tokens2.add(token);
-        	} else if (token.getType() == 2) {
-        		while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
-	        		tokens2.add(operatorStack.pop());
-        		}
-        		operatorStack.push(token);
-        	}
-        	if (token.getValue().equals("(")) {
-        		operatorStack.push(token);
-        	}
-        	if (token.getValue().equals(")")) {
-        		while (!operatorStack.top().equals("(")) {
-        			tokens2.add(operatorStack.pop());
-        		}
-        		operatorStack.pop();
-        	}
-        	index++;
-        }
+		Token token = tokens.get(index);
+
+		if (token.getType() == 1) {
+			tokens2.add(token);
+		} else if (token.getType() == 2) {
+			while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
+				tokens2.add(operatorStack.pop());
+			}
+			operatorStack.push(token);
+		}
+		if (token.getValue().equals("(")) {
+			operatorStack.push(token);
+		}
+		if (token.getValue().equals(")")) {
+			while (operatorStack.top() != null && !(operatorStack.top().getValue().equals("("))) {
+				tokens2.add(operatorStack.pop());
+			}
+			operatorStack.pop();
+		}
+		index++;
+	}
         while (operatorStack.top() != null) {
     		tokens2.add(operatorStack.pop());
     	}
