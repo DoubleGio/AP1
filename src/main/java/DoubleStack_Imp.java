@@ -14,9 +14,9 @@ public class DoubleStack_Imp implements DoubleStack {
     	if (topOfStack == doubleStack.length) {
     		double[] tempStack = new double[doubleStack.length * 2];
     		System.arraycopy(doubleStack, 0, tempStack, 0, doubleStack.length - 1);
-    		tempStack[topOfStack] = element;
     		doubleStack = tempStack;
     	}
+	tempStack[topOfStack] = element;
     }
 
     public Double pop() {
