@@ -24,7 +24,7 @@ public class TokenList_Imp implements TokenList {
 		tokenList[index] = token;
 	}
 
-	public Token get(int index) {
+	public Token_Imp get(int index) {
 		return tokenList[index];
 	}
 
