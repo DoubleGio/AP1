@@ -43,7 +43,7 @@ public class Stack implements TokenStack {
 	}
 
 	public int size() {
-		return topOfStack;
+		return topOfStack + 1;
 	}
 
 }
