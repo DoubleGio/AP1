@@ -13,7 +13,7 @@ public class DoubleStack_Imp implements DoubleStack {
     	topOfStack ++;
     	if (topOfStack == doubleStack.length) {
     		double[] tempStack = new double[doubleStack.length * 2];
-    		System.arraycopy(doubleStack, 0, tempStack, 0, doubleStack.length - 1);
+    		System.arraycopy(doubleStack, 0, tempStack, 0, doubleStack.length);
     		doubleStack = tempStack;
     	}
 	doubleStack[topOfStack] = element;

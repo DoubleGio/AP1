@@ -55,7 +55,7 @@ public class Main implements CalculatorInterface {
 	}
 	
     public TokenList readTokens(String input) {
-    	TokenList result = new TokenList_Imp(input.replaceAll("\\s+","").length());
+    	TokenList temp = new TokenList_Imp();
 		Scanner in = new Scanner(input);
 		while (in.hasNext()) {
 			String token = in.next();
@@ -64,7 +64,7 @@ public class Main implements CalculatorInterface {
 			int extra_precedence = 0;
 			if (isNumber(token)) {
 				type = 1;
-				precedence = -1 + extra_precedence;
+				precedence = -1;
 			} else if (isOperator(token)) {
 				type = 2;
 				precedence = whichPresedence(token) + extra_precedence;
@@ -82,15 +82,19 @@ public class Main implements CalculatorInterface {
 				//System.exit(1);
 				break;
 			}
-			result.add(new Token_Imp(token, type, precedence));
+			temp.add(new Token_Imp(token, type, precedence));
 		}
+		TokenList result = new TokenList_Imp(temp.size());
+		for (int i = 0; i < temp.size(); i++) {
+			result.add(temp.get(i));
+		}
+				
 		in.close();
 		return result;
     }
 
-    
     public Double rpn(TokenList tokens) {
-    	DoubleStack stack = new DoubleStack_Imp();		//TODO: stack van tokens --> doublestack
+    	DoubleStack stack = new DoubleStack_Imp();
     	double result = 0.0;
     	
     	for (int i = 0; i < tokens.size(); i++){
@@ -117,43 +121,43 @@ public class Main implements CalculatorInterface {
     	if (operator.getValue().equals(PLUS_TOKEN)) {
     		stack.push(a + b);
     	} else if (operator.getValue().equals(MINUS_TOKEN)) {
-    		stack.push(a - b);
+    		stack.push(b - a);
     	} else if (operator.getValue().equals(MULTIPLY_TOKEN)) {
     		stack.push(a * b);
     	} else if (operator.getValue().equals(DIVIDE_TOKEN)) {
-     		stack.push(a / b);
+     		stack.push(b / a);
      	} else if (operator.getValue().equals(POWER_TOKEN)) {
-    		stack.push((double)((int)a ^ (int)b)); // pici lelijk
+    		stack.push(Math.pow(b, a));
     	}
     	return stack;
     }
 
     public TokenList shuntingYard(TokenList tokens) {
     	TokenList tokens2 = new TokenList_Imp(tokens.size());
-    	Stack operatorStack = new Stack();
+    	TokenStack operatorStack = new TokenStack_Imp();
     	int index = 0;
     	while (index < tokens.size()) {
-		Token token = tokens.get(index);
-
-		if (token.getType() == 1) {
-			tokens2.add(token);
-		} else if (token.getType() == 2) {
-			while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
-				tokens2.add(operatorStack.pop());
+			Token token = tokens.get(index);
+	
+			if (token.getType() == 1) {
+				tokens2.add(token);
+			} else if (token.getType() == 2) {
+				while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
+					tokens2.add(operatorStack.pop());
+				}
+				operatorStack.push(token);
 			}
-			operatorStack.push(token);
-		}
-		if (token.getValue().equals("(")) {
-			operatorStack.push(token);
-		}
-		if (token.getValue().equals(")")) {
-			while (operatorStack.top() != null && !(operatorStack.top().getValue().equals("("))) {
-				tokens2.add(operatorStack.pop());
+			if (token.getValue().equals("(")) {
+				operatorStack.push(token);
 			}
-			operatorStack.pop();
+			if (token.getValue().equals(")")) {
+				while (operatorStack.top() != null && !(operatorStack.top().getValue().equals("("))) {
+					tokens2.add(operatorStack.pop());
+				}
+				operatorStack.pop();
+			}
+			index++;
 		}
-		index++;
-	}
         while (operatorStack.top() != null) {
     		tokens2.add(operatorStack.pop());
     	}
@@ -161,9 +165,16 @@ public class Main implements CalculatorInterface {
     }
 
     private void start() {
-        // Create a scanner on System.in
-        
-        // While there is input, read line and parse it.
+        Scanner in = new Scanner(System.in);
+        PrintStream out = new PrintStream(System.out);
+
+        while (in.hasNextLine()) {
+        	TokenList tokens = readTokens(in.nextLine());
+        	tokens = shuntingYard(tokens);
+        	Double result = rpn(tokens);
+        	out.printf("%.6f \n", result);
+        }
+        in.close();
     }
 
     public static void main(String[] argv) {

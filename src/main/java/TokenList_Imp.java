@@ -1,17 +1,27 @@
 
 public class TokenList_Imp implements TokenList {
 	
-	private Token_Imp[] tokenList;  
-	private int index;	
+	private Token[] tokenList;
+	private int index;
+	
+	public TokenList_Imp() {
+		tokenList = new Token[10];
+		index = -1;
+	}
 	
 	public TokenList_Imp(int length) {
-		tokenList = new Token_Imp[length];	
-		index = 0;
-	}
+		tokenList = new Token[length];
+		index = -1;
+	}	
 
-	public void add(Token_Imp token) {
+	public void add(Token token) {
+		index++;		
+		if (index == tokenList.length) {
+			Token[] tempStack = new Token[tokenList.length * 2];
+    			System.arraycopy(tokenList, 0, tempStack, 0, tokenList.length);
+    			tokenList = tempStack;
+		}
 		tokenList[index] = token;
-		index++;
 	}
 
     public void remove(int index) { 
@@ -20,16 +30,16 @@ public class TokenList_Imp implements TokenList {
     	System.arraycopy(tokenList, index+1, tempArray, index, tokenList.length - index);
     }
 
-	public void set(int index, Token_Imp token) {
+	public void set(int index, Token token) {
 		tokenList[index] = token;
 	}
 
-	public Token_Imp get(int index) {
+	public Token get(int index) {
 		return tokenList[index];
 	}
 
 	public int size() {
-		return tokenList.length;
+		return index + 1;
 	}
 
 }
