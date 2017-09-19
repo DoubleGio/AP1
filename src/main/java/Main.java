@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Main implements CalculatorInterface {
     
     private static final String OPERATOR_TOKENS = "+ - * / ^";
-    private static final String OPERATOR_TOKENS = "+ - * / ^";
     private static final String PLUS_TOKEN = "+";
     private static final String MINUS_TOKEN = "-";
     private static final String MULTIPLY_TOKEN = "*";
@@ -91,13 +90,14 @@ public class Main implements CalculatorInterface {
 
     
     public Double rpn(TokenList tokens) {
-    	DoubleStack_Imp stack = new DoubleStack_Imp();
+    	DoubleStack stack = new DoubleStack_Imp();		//TODO: stack van tokens --> doublestack
     	double result = 0.0;
     	
     	for (int i = 0; i < tokens.size(); i++){
     		if (tokens.get(i).getType() == 1) {
     			Scanner in = new Scanner(tokens.get(i).getValue());
     			stack.push(in.nextDouble());
+    			in.close();
     		} else if (tokens.get(i).getType() == 2){
     			stack = performOperation(tokens.get(i), stack);
     		}
@@ -110,7 +110,7 @@ public class Main implements CalculatorInterface {
         return result;
     }
 	
-    private DoubleStack_Imp performOperation(Token_Imp operator, DoubleStack_Imp stack) {
+    private DoubleStack performOperation(Token operator, DoubleStack stack) {
     	double a = stack.pop();
     	double b = stack.pop();
     	
