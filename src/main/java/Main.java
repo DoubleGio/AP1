@@ -88,11 +88,11 @@ public class Main implements CalculatorInterface {
     	double result = 0.0;
     	
     	for (int i = 0; i < tokens.size(); i++){
-    		if (tokens.get(i).getType() == 1) {
+    		if (tokens.get(i).getType() == Token.NUMBER_TYPE) {
     			Scanner in = new Scanner(tokens.get(i).getValue());
     			stack.push(in.nextDouble());
     			in.close();
-    		} else if (tokens.get(i).getType() == 2){
+    		} else if (tokens.get(i).getType() == Token.OPERATOR_TYPE){
     			stack = performOperation(tokens.get(i), stack);
     		}
     	}
@@ -130,9 +130,9 @@ public class Main implements CalculatorInterface {
     	while (index < tokens.size()) {
 			Token token = tokens.get(index);
 	
-			if (token.getType() == 1) {
+			if (token.getType() == Token.NUMBER_TYPE) {
 				tokens2.add(token);
-			} else if (token.getType() == 2) {
+			} else if (token.getType() == Token.OPERATOR_TYPE) {
 				while (operatorStack.top() != null && operatorStack.top().getPrecedence() >= token.getPrecedence()) {
 					tokens2.add(operatorStack.pop());
 				}
