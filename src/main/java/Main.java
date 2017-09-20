@@ -5,12 +5,15 @@ import java.util.Scanner;
 
 public class Main implements CalculatorInterface {
     
-    private static final String OPERATOR_TOKENS = "+ - * / ^";
-    private static final String PLUS_TOKEN = "+";
-    private static final String MINUS_TOKEN = "-";
-    private static final String MULTIPLY_TOKEN = "*";
-    private static final String DIVIDE_TOKEN = "/";
-    private static final String POWER_TOKEN = "^";
+    private static final String OPERATOR_TOKENS = "+ - * / ^",
+			PLUS_TOKEN = "+",
+			MINUS_TOKEN = "-",
+			MULTIPLY_TOKEN = "*",
+			DIVIDE_TOKEN = "/",
+			POWER_TOKEN = "^";
+    
+    private static final int NUMBER_PRECEDENCE = -1,
+    		PARENTHESIS_PRECEDENCE = -2;
 
 	private boolean isNumber(String token) {
 		try(Scanner in = new Scanner(token)) {
@@ -29,19 +32,19 @@ public class Main implements CalculatorInterface {
 		return false;
 	}
 	
-	private int whichPresedence(String token) {
+	private int whichPrecedence(String token) {
 		int presedence = 0;
 		switch (token) {
-			case PLUS_TOKEN: presedence = 0;
-				break;
-			case MINUS_TOKEN: presedence = 0;
-				break;
-			case MULTIPLY_TOKEN: presedence = 1;
-				break;
-			case DIVIDE_TOKEN: presedence = 1;
-				break;
-			case POWER_TOKEN: presedence = 2;
-				break;
+		case PLUS_TOKEN: presedence = 0;
+			break;
+		case MINUS_TOKEN: presedence = 0;
+			break;
+		case MULTIPLY_TOKEN: presedence = 1;
+			break;
+		case DIVIDE_TOKEN: presedence = 1;
+			break;
+		case POWER_TOKEN: presedence = 2;
+			break;
 		}
 		return presedence;
 	}
@@ -59,36 +62,23 @@ public class Main implements CalculatorInterface {
 		Scanner in = new Scanner(input);
 		while (in.hasNext()) {
 			String token = in.next();
-			int type;
-			int precedence;
-			int extra_precedence = 0;
 			if (isNumber(token)) {
-				type = 1;
-				precedence = -1;
-			} else if (isOperator(token)) {
-				type = 2;
-				precedence = whichPresedence(token) + extra_precedence;
+				temp.add(new Token_Imp(token, Token.NUMBER_TYPE, NUMBER_PRECEDENCE));		//Is dit het juiste gebruik van "NUMBER_TYPE"
+			} else if (isOperator(token)) {								//uit de Token interface?
+				temp.add(new Token_Imp(token, Token.OPERATOR_TYPE, whichPrecedence(token)));
 			} else if (isParenthesis(token)) {
-				type = 3;
-				precedence = -2;
-				if (token.equals("(")) {
-				    extra_precedence++;
-				} else if (token.equals(")")) {
-				    extra_precedence--;
-				}
+				temp.add(new Token_Imp(token, Token.PARENTHESIS_TYPE, PARENTHESIS_PRECEDENCE));
 			} else {
 				PrintStream out = new PrintStream(System.out);
 				out.print("ERROR: unknown character");
 				//System.exit(1);
 				break;
 			}
-			temp.add(new Token_Imp(token, type, precedence));
 		}
 		TokenList result = new TokenList_Imp(temp.size());
 		for (int i = 0; i < temp.size(); i++) {
 			result.add(temp.get(i));
 		}
-				
 		in.close();
 		return result;
     }
@@ -118,16 +108,17 @@ public class Main implements CalculatorInterface {
     	double a = stack.pop();
     	double b = stack.pop();
     	
-    	if (operator.getValue().equals(PLUS_TOKEN)) {
-    		stack.push(a + b);
-    	} else if (operator.getValue().equals(MINUS_TOKEN)) {
-    		stack.push(b - a);
-    	} else if (operator.getValue().equals(MULTIPLY_TOKEN)) {
-    		stack.push(a * b);
-    	} else if (operator.getValue().equals(DIVIDE_TOKEN)) {
-     		stack.push(b / a);
-     	} else if (operator.getValue().equals(POWER_TOKEN)) {
-    		stack.push(Math.pow(b, a));
+    	switch (operator.getValue()) {
+    	case PLUS_TOKEN: stack.push(a + b);
+    		break;
+    	case MINUS_TOKEN: stack.push(b - a);
+    		break;
+    	case MULTIPLY_TOKEN: stack.push(a * b);
+    		break;
+    	case DIVIDE_TOKEN: stack.push(b / a);
+    		break;
+    	case POWER_TOKEN: stack.push(Math.pow(b, a));
+    		break;
     	}
     	return stack;
     }
