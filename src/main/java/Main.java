@@ -99,7 +99,7 @@ public class Main implements CalculatorInterface {
     	if (stack.size() == 1) {
     		result = stack.top();
     	} else {
-    		//something error
+    		System.err.print("ERROR: More than 1 double left on the stack \n") 
     	}
         return result;
     }
