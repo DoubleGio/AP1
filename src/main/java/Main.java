@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+@SuppressWarnings("unused")
 public class Main implements CalculatorInterface {
     
     private static final String OPERATOR_TOKENS = "+ - * / ^",
@@ -63,15 +64,14 @@ public class Main implements CalculatorInterface {
 		while (in.hasNext()) {
 			String token = in.next();
 			if (isNumber(token)) {
-				temp.add(new Token_Imp(token, Token.NUMBER_TYPE, NUMBER_PRECEDENCE));		//Is dit het juiste gebruik van "NUMBER_TYPE"
-			} else if (isOperator(token)) {								//uit de Token interface?
+				temp.add(new Token_Imp(token, Token.NUMBER_TYPE, NUMBER_PRECEDENCE));
+			} else if (isOperator(token)) {
 				temp.add(new Token_Imp(token, Token.OPERATOR_TYPE, whichPrecedence(token)));
 			} else if (isParenthesis(token)) {
 				temp.add(new Token_Imp(token, Token.PARENTHESIS_TYPE, PARENTHESIS_PRECEDENCE));
 			} else {
 				PrintStream out = new PrintStream(System.out);
 				out.print("ERROR: unknown character");
-				//System.exit(1);
 				break;
 			}
 		}
@@ -96,11 +96,7 @@ public class Main implements CalculatorInterface {
     			stack = performOperation(tokens.get(i), stack);
     		}
     	}
-    	if (stack.size() == 1) {
-    		result = stack.top();
-    	} else {
-    		System.err.print("ERROR: More than 1 double left on the stack \n") 
-    	}
+    	result = stack.top();
         return result;
     }
 	

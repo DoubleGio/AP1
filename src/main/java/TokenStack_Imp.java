@@ -3,9 +3,10 @@ public class TokenStack_Imp implements TokenStack {
 
 	private Token[] tokenStack;
 	private int topOfStack;
+	private static final int STANDARD_LENGTH = 10;
 	
 	public TokenStack_Imp () {
-		tokenStack = new Token[10];
+		tokenStack = new Token[STANDARD_LENGTH];
 		topOfStack = -1;
 	}
 	
@@ -29,9 +30,6 @@ public class TokenStack_Imp implements TokenStack {
 	}
 
 	public Token pop() {
-		if (topOfStack <= -1) {
-			//something error
-		}
 		topOfStack--;
 		return tokenStack[topOfStack + 1];
 	}

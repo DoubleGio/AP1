@@ -3,9 +3,10 @@ public class TokenList_Imp implements TokenList {
 	
 	private Token[] tokenList;
 	private int index;
-	
+	private static final int STANDARD_LENGTH = 10;
+
 	public TokenList_Imp() {
-		tokenList = new Token[10];
+		tokenList = new Token[STANDARD_LENGTH];
 		index = -1;
 	}
 	
